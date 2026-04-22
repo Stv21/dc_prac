@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>5. Ricart-Agarwala Algorithm</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+import threading
+import time
+import queue
+
+class Node(threading.Thread):
+    def __init__(self, node_id, total_nodes):
+        super().__init__()
+        self.node_id = node_id
+        self.total_nodes = total_nodes
+        self.clock = 0
+        self.request_queue = []  # List of (timestamp, node_id)
+        self.acks_received = 0
+        self.lock = threading.Lock()
+        self.messages = queue.Queue()
+        self.running = True
+
+    def log(self, msg):
+        print(f&quot;[Node {self.node_id} | Clock {self.clock}]: {msg}&quot;)
+
+    def send_message(self, target_node, msg_type, timestamp):
+        network[target_node].messages.put((msg_type, timestamp, self.node_id))
+
+    def request_access(self):
+        with self.lock:
+            self.clock += 1
+            request_ts = self.clock
+            self.request_queue.append((request_ts, self.node_id))
+            self.request_queue.sort()
+            self.acks_received = 0
+        self.log(&quot;Requesting Critical Section...&quot;)
+        for i in range(self.total_nodes):
+            if i != self.node_id:
+                self.send_message(i, &quot;REQUEST&quot;, request_ts)
+        # Wait until top of queue and all ACKs received
+        while True:
+            with self.lock:
+                is_first = self.request_queue[0][1] == self.node_id
+                if is_first and self.acks_received == self.total_nodes - 1:
+                    break
+            time.sleep(0.1)
+        self.enter_critical_section()
+
+    def enter_critical_section(self):
+        self.log(&quot;!!! ENTERED CRITICAL SECTION !!!&quot;)
+        time.sleep(1)  # Simulate work
+        self.log(&quot;Leaving Critical Section.&quot;)
+        with self.lock:
+            self.request_queue.pop(0)
+            release_ts = self.clock
+        for i in range(self.total_nodes):
+            if i != self.node_id:
+                self.send_message(i, &quot;RELEASE&quot;, release_ts)
+
+    def run(self):
+        while self.running:
+            try:
+                msg_type, ts, sender_id = self.messages.get(timeout=1)
+                with self.lock:
+                    # Lamport Clock update: C = max(C, incoming_ts) + 1
+                    self.clock = max(self.clock, ts) + 1
+                    if msg_type == &quot;REQUEST&quot;:
+                        self.request_queue.append((ts, sender_id))
+                        self.request_queue.sort()
+                        self.send_message(sender_id, &quot;ACK&quot;, self.clock)
+                    elif msg_type == &quot;ACK&quot;:
+                        self.acks_received += 1
+                    elif msg_type == &quot;RELEASE&quot;:
+                        self.request_queue = [r for r in self.request_queue if r[1] != sender_id]
+            except queue.Empty:
+                continue
+
+# Setup simulation
+num_nodes = 3
+network = [Node(i, num_nodes) for i in range(num_nodes)]
+for n in network:
+    n.start()
+
+# Node 0 and Node 2 both want access at roughly the same time
+time.sleep(1)
+threading.Thread(target=network[0].request_access).start()
+threading.Thread(target=network[2].request_access).start()
+
+# Let it run then shut down
+time.sleep(5)
+for n in network:
+    n.running = False
+
+</pre>
+</body>
+</html>

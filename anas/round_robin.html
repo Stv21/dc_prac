@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>8. Round Robin Load Balancing</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+class RoundRobinLoadBalancer:
+    def __init__(self, servers):
+        self.servers = servers
+        self.index = 0
+
+    def get_server(self):
+        server = self.servers[self.index]
+        self.index = (self.index + 1) % len(self.servers)
+        return server
+
+servers = [&quot;Server A&quot;, &quot;Server B&quot;, &quot;Server C&quot;]
+lb = RoundRobinLoadBalancer(servers)
+
+print(&quot;Round Robin Load Balancing:&quot;)
+for i in range(10):
+    print(f&quot;Request {i+1} handled by {lb.get_server()}&quot;)
+
+</pre>
+</body>
+</html>

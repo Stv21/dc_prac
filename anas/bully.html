@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3. Bully Algorithm</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+from random import random
+
+class Node:
+    def __init__(self, id):
+        self.id = id
+        self.coord = False
+
+    def get_id(self):
+        return self.id
+
+    def becom_coord(self):
+        self.coord = True
+
+    def init_elect(self, nodes):
+        valid = []
+        print(f&quot;Node:{self.id} initing elec&quot;)
+        for node in nodes:
+            rcv = node.receive_elec()
+            if rcv and self.get_id() &lt; node.get_id():
+                print(f&quot;Node:{self.id} received res from {node.get_id()}&quot;)
+                valid.append(node)
+        if not valid:
+            print(f&quot;Node:{self.id} became coord&quot;)
+            self.becom_coord()
+        else:
+            valid.sort(key=lambda x: x.id)
+            print(f&quot;Node:{self.id} delegating to {valid[-1].id}&quot;)
+            valid[-1].init_elect(nodes)
+
+    def receive_elec(self):
+        ck = random()
+        if ck &gt; 0.5:
+            return True
+        return False
+
+sys = [Node(i) for i in range(10)]
+sys[0].init_elect(sys)
+
+</pre>
+</body>
+</html>

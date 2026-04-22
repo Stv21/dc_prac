@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>7. Random Load Balancing</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+import random
+
+servers = [&quot;Server A&quot;, &quot;Server B&quot;, &quot;Server C&quot;]
+
+def random_load_balancer():
+    return random.choice(servers)
+
+print(&quot;Random Load Balancing:&quot;)
+for i in range(10):
+    print(f&quot;Request {i+1} handled by {random_load_balancer()}&quot;)
+
+</pre>
+</body>
+</html>

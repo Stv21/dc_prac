@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>1. IPC using Message Passing</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+from concurrent.futures import ThreadPoolExecutor
+from random import randint
+from queue import Queue
+
+q = Queue()
+
+def publisher():
+    while True:
+        x = &quot;&quot;.join([chr(ord(&#x27;a&#x27;) + randint(0, 25)) for _ in range(randint(0, 20))])
+        print(f&quot;Writing:{x}&quot;)
+        q.put(x)
+
+def subscriber():
+    while True:
+        print(f&quot;Reading:{q.get()}&quot;)
+        q.task_done()
+
+with ThreadPoolExecutor(2) as pool:
+    x = pool.submit(publisher)
+    pool.submit(subscriber)
+    while x.running():
+        continue
+
+</pre>
+</body>
+</html>

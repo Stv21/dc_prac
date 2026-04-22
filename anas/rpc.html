@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2. RPC (Remote Procedure Call)</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+# ---- server side ----
+from xmlrpc.server import SimpleXMLRPCServer
+import threading
+
+def add(x, y):
+    return x + y
+
+def start_server():
+    server = SimpleXMLRPCServer((&quot;localhost&quot;, 8000), logRequests=False)
+    server.register_function(add, &quot;add&quot;)
+    print(&quot;Server is running...&quot;)
+    server.serve_forever()
+
+# Start server in background thread
+t = threading.Thread(target=start_server, daemon=True)
+t.start()
+
+# ---- client side ----
+import xmlrpc.client
+import time
+time.sleep(0.5)  # wait for server to start
+
+proxy = xmlrpc.client.ServerProxy(&quot;http://localhost:8000/&quot;)
+print(&quot;3 + 5 =&quot;, proxy.add(3, 5))
+print(&quot;10 + 20 =&quot;, proxy.add(10, 20))
+
+</pre>
+</body>
+</html>

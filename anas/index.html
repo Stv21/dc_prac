@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distributed Computing Files</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Distributed Computing Files</h1>
+<ol>
+<li><a href="ipc.html">1. IPC using Message Passing</a> - Publisher-subscriber using ThreadPoolExecutor and Queue for inter-process communication.</li>
+<li><a href="rpc.html">2. RPC (Remote Procedure Call)</a> - XML-RPC server exposes add() function; client calls it remotely over localhost.</li>
+<li><a href="bully.html">3. Bully Algorithm</a> - Election algorithm — nodes delegate upward until highest available ID becomes coordinator.</li>
+<li><a href="ring.html">4. Ring Algorithm</a> - Election via ring topology — message travels full circle, max ID declared leader.</li>
+<li><a href="ricart.html">5. Ricart-Agarwala Algorithm</a> - Distributed mutual exclusion using Lamport clocks, threading, and REQUEST/ACK/RELEASE messages.</li>
+<li><a href="deadlock.html">6. Deadlock Detection (Centralized)</a> - Centralized approach — detects which process is blocked waiting for a resource held by another.</li>
+<li><a href="random_lb.html">7. Random Load Balancing</a> - Each incoming request is assigned to a randomly chosen server.</li>
+<li><a href="round_robin.html">8. Round Robin Load Balancing</a> - Requests distributed in cyclic order across all servers using an index pointer.</li>
+<li><a href="least.html">9. Least Connection Load Balancing</a> - Request routed to the server currently handling the fewest active connections.</li>
+<li><a href="all_code.html">All Code Combined</a> - All 9 experiments in one page</li>
+</ol>
+</body>
+</html>
