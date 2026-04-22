@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distributed Computing - All Code</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Distributed Computing - All Experiments</h1>
+
+<!-- 1. IPC using Message Passing -->
+<h2>1. IPC using Message Passing</h2>
+<pre>
+from multiprocessing import Process,Queue
+
+def sender(q):
+	q.put(&quot;Hello from Weakass&quot;)
+def receiver(q):
+	print(&quot;choco ghe lavdya:&quot;,q.get())
+
+if __name__ == &quot;__main__&quot;:
+	q = Queue()
+	p1 = Process(target=sender,args=(q,))
+	p2 = Process(target=receiver,args=(q,))
+
+	p1.start()
+	p2.start()
+	p1.join()
+	p2.join()
+
+</pre>
+
+<!-- 2. RPC (Remote Procedure Call) -->
+<h2>2. RPC (Remote Procedure Call)</h2>
+<pre>
+def add(a,b):
+	return a+b
+def client():
+	result = server(&quot;add&quot;,5,3)
+	print(&quot;weaka:&quot;,result)
+def server(func,*args):
+	if func == &quot;add&quot;:
+		return add(*args)
+client()
+</pre>
+
+<!-- 3. Bully Algorithm -->
+<h2>3. Bully Algorithm</h2>
+<pre>
+processes = [ 1,2,3,4,5]
+alive = [1,2,3,4]
+
+def bulli(ini):
+	print(f&quot;the ini is {ini} process&quot;)
+	candidates=[p for p in processes if p&gt;ini and p in alive]
+
+	if not candidates:
+		print(f&quot;Process{ini} is coordinator&quot;)
+		return ini
+	else:
+		return bulli(max(candidates))
+
+
+neta= bulli(2)
+print(&quot;neta:&quot;,neta)	
+</pre>
+
+<!-- 4. Ring Algorithm -->
+<h2>4. Ring Algorithm</h2>
+<pre>
+processes = [1,2,3,4,5]
+
+def ring(start):
+	index = processes.index(start)
+	n = len(processes)
+	
+	print(f&quot;process{start} starts election&quot;)
+	message=[start]
+	current = index
+	
+	while True:
+		next_index=(current+1)%n
+		next_process = processes[next_index]
+		print(f&quot;{processes[current]} -&gt; {next_process} sends {message}&quot;)
+		
+		if next_process not in message:
+			message.append(next_process)
+
+		current = next_index
+		if processes[current] == start:
+            		break
+	leader = max(message)
+	print(leader)
+ring(3)
+</pre>
+
+<!-- 5. Ricart-Agarwala Algorithm -->
+<h2>5. Ricart-Agarwala Algorithm</h2>
+<pre>
+processes = [1, 2, 3]
+requesting = []
+
+def request_cs(pid):
+    requesting.append(pid)
+    print(f&quot;Process {pid} requesting Critical Section&quot;)
+
+def grant_cs(pid):
+    others = [p for p in requesting if p != pid]
+    if not others or pid &lt; min(others):
+        print(f&quot;Process {pid} granted Critical Section&quot;)
+        requesting.remove(pid)
+    else:
+        print(f&quot;Process {pid} deferred by Process {min(others)}&quot;)
+
+for p in processes:
+    request_cs(p)
+
+for p in processes:
+    grant_cs(p)
+
+</pre>
+
+<!-- 6. Deadlock Detection (Centralized) -->
+<h2>6. Deadlock Detection (Centralized)</h2>
+<pre>
+processes = [&#x27;P1&#x27;, &#x27;P2&#x27;, &#x27;P3&#x27;]
+resources = [&#x27;R1&#x27;, &#x27;R2&#x27;]
+
+allocation = {&#x27;P1&#x27;: &#x27;R1&#x27;, &#x27;P2&#x27;: &#x27;R2&#x27;}
+request = {&#x27;P3&#x27;: &#x27;R1&#x27;}
+
+def detect_deadlock():
+    for p, r in request.items():
+        for ap, ar in allocation.items():
+            if r == ar:
+                print(f&quot;Deadlock possible: {p} waiting for {ap}&quot;)
+
+detect_deadlock()
+</pre>
+
+<!-- 7. Random Load Balancing -->
+<h2>7. Random Load Balancing</h2>
+<pre>
+import random
+
+servers = [&quot;S1&quot;, &quot;S2&quot;, &quot;S3&quot;]
+
+def random_lb():
+    for i in range(5):
+        server = random.choice(servers)
+        print(f&quot;Request {i} -&gt; {server}&quot;)
+
+random_lb()
+</pre>
+
+<!-- 8. Round Robin Load Balancing -->
+<h2>8. Round Robin Load Balancing</h2>
+<pre>
+servers = [&quot;S1&quot;, &quot;S2&quot;, &quot;S3&quot;]
+
+def round_robin(n):
+    for i in range(n):
+        server = servers[i % len(servers)]
+        print(f&quot;Request {i} -&gt; {server}&quot;)
+
+round_robin(6)
+</pre>
+
+<!-- 9. Least Connection Load Balancing -->
+<h2>9. Least Connection Load Balancing</h2>
+<pre>
+servers = { &quot;S1&quot;:0,&quot;S2&quot;:0,&quot;S3&quot;:0}
+def least(n):
+	for i in range(n):
+		server=min(servers,key=servers.get)
+		servers[server]+=1
+		print(f&quot;request{i} assigned to {server}&quot;)
+least(6)
+</pre>
+
+</body>
+</html>

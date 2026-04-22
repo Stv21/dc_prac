@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3. Bully Algorithm</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+processes = [ 1,2,3,4,5]
+alive = [1,2,3,4]
+
+def bulli(ini):
+	print(f&quot;the ini is {ini} process&quot;)
+	candidates=[p for p in processes if p&gt;ini and p in alive]
+
+	if not candidates:
+		print(f&quot;Process{ini} is coordinator&quot;)
+		return ini
+	else:
+		return bulli(max(candidates))
+
+
+neta= bulli(2)
+print(&quot;neta:&quot;,neta)	
+</pre>
+</body>
+</html>

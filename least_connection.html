@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>9. Least Connection Load Balancing</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+servers = { &quot;S1&quot;:0,&quot;S2&quot;:0,&quot;S3&quot;:0}
+def least(n):
+	for i in range(n):
+		server=min(servers,key=servers.get)
+		servers[server]+=1
+		print(f&quot;request{i} assigned to {server}&quot;)
+least(6)
+</pre>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>8. Round Robin Load Balancing</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+servers = [&quot;S1&quot;, &quot;S2&quot;, &quot;S3&quot;]
+
+def round_robin(n):
+    for i in range(n):
+        server = servers[i % len(servers)]
+        print(f&quot;Request {i} -&gt; {server}&quot;)
+
+round_robin(6)
+</pre>
+</body>
+</html>

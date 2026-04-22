@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>5. Ricart-Agarwala Algorithm</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+processes = [1, 2, 3]
+requesting = []
+
+def request_cs(pid):
+    requesting.append(pid)
+    print(f&quot;Process {pid} requesting Critical Section&quot;)
+
+def grant_cs(pid):
+    others = [p for p in requesting if p != pid]
+    if not others or pid &lt; min(others):
+        print(f&quot;Process {pid} granted Critical Section&quot;)
+        requesting.remove(pid)
+    else:
+        print(f&quot;Process {pid} deferred by Process {min(others)}&quot;)
+
+for p in processes:
+    request_cs(p)
+
+for p in processes:
+    grant_cs(p)
+
+</pre>
+</body>
+</html>

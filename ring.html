@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>4. Ring Algorithm</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+processes = [1,2,3,4,5]
+
+def ring(start):
+	index = processes.index(start)
+	n = len(processes)
+	
+	print(f&quot;process{start} starts election&quot;)
+	message=[start]
+	current = index
+	
+	while True:
+		next_index=(current+1)%n
+		next_process = processes[next_index]
+		print(f&quot;{processes[current]} -&gt; {next_process} sends {message}&quot;)
+		
+		if next_process not in message:
+			message.append(next_process)
+
+		current = next_index
+		if processes[current] == start:
+            		break
+	leader = max(message)
+	print(leader)
+ring(3)
+</pre>
+</body>
+</html>

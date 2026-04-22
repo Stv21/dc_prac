@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2. RPC (Remote Procedure Call)</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+def add(a,b):
+	return a+b
+def client():
+	result = server(&quot;add&quot;,5,3)
+	print(&quot;weaka:&quot;,result)
+def server(func,*args):
+	if func == &quot;add&quot;:
+		return add(*args)
+client()
+</pre>
+</body>
+</html>

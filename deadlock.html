@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>6. Deadlock Detection (Centralized)</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+processes = [&#x27;P1&#x27;, &#x27;P2&#x27;, &#x27;P3&#x27;]
+resources = [&#x27;R1&#x27;, &#x27;R2&#x27;]
+
+allocation = {&#x27;P1&#x27;: &#x27;R1&#x27;, &#x27;P2&#x27;: &#x27;R2&#x27;}
+request = {&#x27;P3&#x27;: &#x27;R1&#x27;}
+
+def detect_deadlock():
+    for p, r in request.items():
+        for ap, ar in allocation.items():
+            if r == ar:
+                print(f&quot;Deadlock possible: {p} waiting for {ap}&quot;)
+
+detect_deadlock()
+</pre>
+</body>
+</html>

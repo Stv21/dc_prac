@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>1. IPC using Message Passing</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<pre>
+from multiprocessing import Process,Queue
+
+def sender(q):
+	q.put(&quot;Hello from Weakass&quot;)
+def receiver(q):
+	print(&quot;choco ghe lavdya:&quot;,q.get())
+
+if __name__ == &quot;__main__&quot;:
+	q = Queue()
+	p1 = Process(target=sender,args=(q,))
+	p2 = Process(target=receiver,args=(q,))
+
+	p1.start()
+	p2.start()
+	p1.join()
+	p2.join()
+
+</pre>
+</body>
+</html>
